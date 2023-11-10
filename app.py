@@ -32,6 +32,11 @@ def log_finedust():
     return json.dumps({'success': True}), 201, {'ContentType': 'application/json'}
 
 
+@app.route("/test", methods=["GET"])
+def test():
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
 def download(path):
     response = requests.get("/".join([URL, path]), auth=AUTH)
     print(response.content)
