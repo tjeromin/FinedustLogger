@@ -20,7 +20,7 @@ def log_finedust():
     pm25 = args.get("pm25")
     pm10 = args.get("pm10")
 
-    filepath = PATH + datetime.now().strftime(FILENAME_FORMAT) + "-Feinstaub"
+    filepath = PATH + str(datetime.now().strftime(FILENAME_FORMAT)) + "-Feinstaub"
     content = download(filepath + ".csv")
     if content != "":
         content += "\r\n"
