@@ -6,14 +6,12 @@ import dotenv
 
 app = Flask(__name__)
 
-dotenv.load_dotenv()
+dotenv.load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 URL = os.getenv("URL")
 PATH = os.getenv("NC_PATH")
 AUTH = (os.getenv("NC_USERNAME"), os.getenv("PASSWORD"))
 ENCODING = "utf-8"
 FILENAME_FORMAT = "%Y-%m"
-
-print(URL, PATH)
 
 
 @app.route("/api/log/finedust", methods=["PUT"])
