@@ -13,6 +13,8 @@ AUTH = (os.getenv("NC_USERNAME"), os.getenv("PASSWORD"))
 ENCODING = "utf-8"
 FILENAME_FORMAT = "%Y-%m"
 
+print(URL, PATH)
+
 
 @app.route("/api/log/finedust", methods=["PUT"])
 def log_finedust():
