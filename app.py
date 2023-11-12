@@ -4,6 +4,7 @@ from datetime import datetime
 import os
 import dotenv
 import threading
+import sys
 
 app = Flask(__name__)
 
@@ -13,6 +14,8 @@ PATH = os.getenv("NC_PATH")
 AUTH = (os.getenv("NC_USERNAME"), os.getenv("PASSWORD"))
 ENCODING = "utf-8"
 FILENAME_FORMAT = "%Y-%m"
+
+print("python interpreter used: " + sys.executable)
 
 
 @app.route("/api/log/finedust", methods=["PUT"])
