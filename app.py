@@ -3,6 +3,7 @@ import requests
 from datetime import datetime
 import os
 import dotenv
+import threading
 
 app = Flask(__name__)
 
@@ -20,6 +21,16 @@ def log_finedust():
     pm25 = args.get("pm25")
     pm10 = args.get("pm10")
 
+    if pm25 is None or pm10 is None:
+        return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
+
+    t = threading.Thread(target=update_files, args=(pm25, pm10))
+    t.start()
+
+    return json.dumps({'success': True}), 201, {'ContentType': 'application/json'}
+
+
+def update_files(pm25, pm10):
     filepath = PATH + str(datetime.now().strftime(FILENAME_FORMAT)) + "-Feinstaub"
     content = download(filepath + ".csv")
     if content != "":
@@ -29,8 +40,6 @@ def log_finedust():
     upload(content, filepath + ".csv")
     upload(content, filepath + ".txt")
 
-    return json.dumps({'success': True}), 201, {'ContentType': 'application/json'}
-
 
 @app.route("/test", methods=["GET"])
 def test():
@@ -39,9 +48,6 @@ def test():
 
 def download(path):
     response = requests.get("/".join([URL, path]), auth=AUTH)
-    print(response.content)
-    print(response.headers.get("ContentType"))
-    print(response.status_code)
 
     if response.status_code == 404:
         return ""
@@ -51,7 +57,7 @@ def download(path):
 
 def upload(content, path):
     response = requests.put("/".join([URL, path]), auth=AUTH, data=content)
-    print(response.status_code)
+    print("upload: " + str(response.status_code))
 
 
 if __name__ == '__main__':
